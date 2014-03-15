@@ -18,26 +18,13 @@ Cuba.use Rack::Static,
 Cuba.define do
 
   on root do
-    res.write view(:index)
+    res.write view(:memotest)
   end
 
-  on 'users' do
-    sleep 1
-    users = [
-      {id: 1, name: 'Juan', rol: 'Admin'},
-      {id: 2, name: 'Pedro', rol: 'Guest'},
-      {id: 3, name: 'Toto', rol: 'Guest'},
-    ]
-    res.write JSON.dump(users)
-  end
-
-  on 'roles' do
-    sleep 1
-    roles = [
-      {id: 1, name: 'Admin'},
-      {id: 1, name: 'Guest'},
-    ]
-    res.write JSON.dump(roles)
+  on 'board' do
+    cards = (0..9).to_a * 2
+    board = cards.shuffle.each_slice(5).to_a
+    res.write JSON.dump(board)
   end
 
 end

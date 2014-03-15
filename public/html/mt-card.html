@@ -1,0 +1,78 @@
+<polymer-element name='mt-card' attributes='value'>
+  
+  <style>
+    mt-card .front, mt-card .rear, mt-card .disabled {
+      height: 100px;
+      width: 100px;
+      border: 1px solid #000;
+      cursor: pointer;
+      font-size: 85px;
+      padding: 0;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    mt-card .front {
+      background-color: #FFFA81;
+    }
+
+    mt-card .rear {
+      background-color: rgb(255, 162, 118);
+    }
+
+    mt-card .disabled {
+      background-color: #A1FF7C;
+      cursor: default;
+    }
+  </style>
+
+  <template>
+    <template if='{{enabled}}'>
+      <template if='{{visible}}'>
+        <div class='front' on-click='{{toggle}}'>
+          {{value}}
+        </div>
+      </template>
+      <template if='{{!visible}}'>
+        <div class='rear' on-click='{{toggle}}'></div>
+      </template>
+    </template>
+    <template if='{{!enabled}}'>
+      <div class='disabled'>
+        {{value}}
+      </div>
+    </template>
+  </template>
+
+  <script>
+    (function() {
+      Polymer('mt-card', {
+        ready: function() {
+          this.visible = false;
+          this.enabled = true
+        },
+        toggle: function() {
+          if (this.visible)
+            this.hide();
+          else
+            this.show();
+        },
+        show: function() {
+          this.visible = true;
+          this.fire('show', {card: this});
+        },
+        hide: function() {
+          this.visible = false;
+          this.fire('hide', {card: this});
+        },
+        disable: function() {
+          this.enabled = false;
+        },
+        enable: function() {
+          this.enabled = true;
+        }
+      });
+    })();
+  </script>
+
+</polymer-element>

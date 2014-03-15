@@ -1,0 +1,21 @@
+<polymer-element name='x-request' constructor='XRequest'>
+  <script>
+    (function() {
+      Polymer('x-request', {
+        get: function(url, callback) {
+          var ajax = new XMLHttpRequest();
+          ajax.open('GET', url, true);
+          ajax.onload = function(e) {
+            callback(e.target.responseText);
+          };
+          ajax.send();
+        },
+        getJSON: function(url, callback) {
+          this.get(url, function(response) {
+            callback(JSON.parse(response));
+          })
+        }
+      });
+    })();
+  </script>
+</polymer-element>

@@ -1,0 +1,65 @@
+<link rel='import' href='/html/x-request.html' />
+<link rel='import' href='/html/mt-card.html' />
+
+<polymer-element name='mt-board'>
+  
+  <template>
+    <button type='button' on-click='{{reset}}'>Nuevo</button>
+    <table>
+    <template repeat='{{row in cards}}'>
+      <tr>
+        <template repeat='{{card in row}}'>
+          <td>
+            <mt-card value='{{card}}' on-show='{{select}}' on-hide='{{unselect}}' />
+          </td>
+        </template>
+      <tr>
+    </template>
+    </table>
+  </template>
+
+  <script>
+    (function() {
+      Polymer('mt-board', {
+        ready: function() {
+          this.selection = []
+          this.cards = [];
+          this.reset();
+        },
+        reset: function() {
+          var self = this;
+          var request = new XRequest();
+          request.getJSON('/board', function(data) {
+            self.cards = data;
+          });
+        },
+        select: function(e) {
+          if (this.selection.length < 2) {
+            this.selection.push(e.detail.card);
+            if (this.selection.length == 2 && this.selection[0].value == this.selection[1].value) {
+              this.selection.forEach(function(c) { c.disable(); });  
+              this.selection = [];
+            } else if (this.selection.length == 2) {
+              var self = this;
+              this.timeout = setTimeout(function() { self.hideSelection(); }, 1500);
+            }
+          } else {
+            if (this.timeout != undefined) {
+              clearTimeout(this.timeout);
+              this.timeout == undefined;
+            }
+            this.hideSelection();
+            this.selection = [e.detail.card];
+          }
+        },
+        unselect: function(e) {
+          this.selection = this.selection.filter(function(c) { return c != e.detail.card; });
+        },
+        hideSelection: function() {
+          this.selection.forEach(function(c) { c.hide(); });
+        }
+      });
+    })();
+  </script>
+
+</polymer-element>
