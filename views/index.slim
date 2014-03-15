@@ -1,0 +1,25 @@
+h1 Web Components
+
+div style='float:left; margin-right:50px'
+  x-table id='users' source='/users' caption='Users'
+    x-field name='id' label='Id'
+    x-field name='name' label='Name'
+    x-field name='rol' label='Rol'
+
+div style='float:left; margin-right:50px'
+  x-table id='roles' source='/roles' caption='Roles'
+    x-field name='id' label='Id'
+    x-field name='name' label='Name'
+
+div style='float:left; margin-right:50px'
+  table
+    caption Title
+    thead
+      tr
+        th Id
+        th Name
+    tbody
+      - 1.upto(3) do |i|
+        tr
+          td= i
+          td Name #{i}
